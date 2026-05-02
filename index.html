@@ -119,11 +119,13 @@
             card.innerHTML = `🏁 <b>RESUMEN DE VENTA</b><br>CLIENTE: ${info.nombre}<br>TRABAJO: ${info.detalle}<br>TOTAL: $${info.precio}`;
             box.appendChild(card);
 
-            document.getElementById('ui').innerHTML = `
-                <a href="https://api.whatsapp.com/send?phone=593993331704&text=${encodeURIComponent(msj)}"target="_blank" class="btn-main" style="background:#25d366;">
-                    📲 ENVIAR A WHATSAPP
-                </a>
-                <button class="opt-btn" style="margin-top:10px" onclick="location.reload()">Nuevo Cliente</button>
+              document.getElementById('ui').innerHTML = `
+        <a href="https://api.whatsapp.com/send?phone=593993331704&text=${encodeURIComponent(msj)}" target="_blank" class="btn-main" style="background:#25d366; text-decoration:none; display:block; text-align:center; color:white; padding:15px; border-radius:8px; font-weight:bold;">
+            📲 ENVIAR A WHATSAPP
+        </a>
+        <button class="opt-btn" style="margin-top:10px; width:100%; padding:10px;" onclick="location.reload()">Nuevo Cliente</button>
+    `;
+  
             `;
             box.scrollTop = box.scrollHeight;
         }
