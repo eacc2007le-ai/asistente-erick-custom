@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erick Custom Cars - Business</title>
+    <style>
+        :root { --neon: #00ff88; --bg: #121212; --card: #1e1e1e; --text: white; }
+        body { font-family: sans-serif; background: var(--bg); color: var(--text); padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        .card { background: var(--card); border-radius: 20px; padding: 25px; width: 100%; max-width: 400px; border-top: 5px solid var(--neon); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { text-align: center; margin: 0; }
+        .subtitle { text-align: center; color: var(--neon); font-size: 0.8rem; margin-bottom: 20px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; background: #2a2a2a; color: white; box-sizing: border-box; font-size: 16px; }
+        .btn-ws { display: block; width: 100%; padding: 15px; background: #25d366; color: white; border: none; border-radius: 12px; font-weight: bold; text-decoration: none; text-align: center; margin-top: 20px; font-size: 16px; }
+        .instrucciones { background: rgba(0,255,136,0.1); padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 0.85rem; border: 1px solid var(--neon); }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Erick Custom Cars</h2>
+        <p class="subtitle">Accesorios & Seguridad Eléctrica</p>
+
+        <input type="text" id="auto" placeholder="Vehículo (Ej: Chevrolet Dmax)" oninput="actualizar()">
+        <select id="servicio" onchange="actualizar()">
+            <option value="Seguros Eléctricos">⚡ Seguros Eléctricos</option>
+            <option value="Elevavidrios">🪟 Elevavidrios Eléctricos</option>
+            <option value="Chapas de Puertas">🔑 Chapas de Puertas</option>
+            <option value="Apertura de Puerta">🔓 Apertura de Emergencia</option>
+        </select>
+        <input type="number" id="precio" placeholder="Precio ($)" oninput="actualizar()">
+
+        <a id="btnWhatsapp" href="#" target="_blank" class="btn-ws">
+            ENVIAR POR WHATSAPP
+        </a>
+
+        <div class="instrucciones">
+            <b>Paso para que funcione:</b><br>
+            1. Guarda este archivo.<br>
+            2. En Acode, toca los <b>3 puntos (⋮)</b> arriba.<br>
+            3. Selecciona <b>"Open in Browser"</b> (Abrir en Chrome).
+        </div>
+    </div>
+
+    <script>
+        function actualizar() {
+            const auto = document.getElementById('auto').value || "Vehículo";
+            const serv = document.getElementById('servicio').value;
+            const precio = document.getElementById('precio').value || "0.00";
+            
+            const hoy = new Date();
+            hoy.setMonth(hoy.getMonth() + 6);
+            const prox = hoy.toLocaleDateString();
+
+            const msj = `*ERICK CUSTOM CARS*%0A*Reporte de Servicio*%0A--------------------%0A🚗 *Auto:* ${auto}%0A🛠️ *Servicio:* ${serv}%0A💰 *Valor:* $${precio}%0A📅 *Mantenimiento:* ${prox}`;
+
+            // URL oficial que Chrome sí reconoce
+            document.getElementById('btnWhatsapp').href = "https://api.whatsapp.com/send?text=" + msj;
+        }
+        actualizar();
+    </script>
+</body>
+</html>
