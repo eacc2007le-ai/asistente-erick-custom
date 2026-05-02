@@ -3,192 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erick Custom Cars - Asistente</title>
+    <title>Erick Custom Cars</title>
     <style>
-        :root {
-            --primary: #c40a0a;
-            --dark: #0a0a0a;
-            --gray: #1a1a1a;
-            --text: #ffffff;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--dark);
-            color: var(--text);
+            /* AQUÍ SE COLOCA EL FONDO */
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            font-family: sans-serif;
             margin: 0;
-            padding: 10px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         #chat-container {
-            width: 100%;
-            max-width: 450px;
-            background: var(--gray);
+            width: 90%;
+            max-width: 400px;
+            background: rgba(20, 20, 20, 0.9);
+            border: 2px solid #c40a0a;
             border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(196, 10, 10, 0.3);
-            display: flex;
-            flex-direction: column;
-            height: 90vh;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(196, 10, 10, 0.5);
         }
 
-        #header {
-            padding: 15px;
-            text-align: center;
-            background: linear-gradient(to bottom, #333, #000);
-            border-bottom: 2px solid var(--primary);
-        }
-
-        #header img {
-            width: 100%;
-            max-height: 150px;
-            object-fit: contain;
-            border-radius: 10px;
-        }
-
-        #chat-box {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .msg { padding: 12px; border-radius: 10px; max-width: 85%; line-height: 1.4; }
-        .bot { background: #333; align-self: flex-start; border-left: 4px solid var(--primary); }
-        .user { background: var(--primary); align-self: flex-end; }
-
-        .options { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-        
-        .btn-opt {
-            background: transparent;
+        .btn-main {
+            background: #c40a0a;
             color: white;
-            border: 1px solid var(--primary);
+            border: none;
             padding: 12px;
+            width: 100%;
+            margin-top: 10px;
             border-radius: 8px;
+            font-weight: bold;
             cursor: pointer;
-            text-align: left;
-            font-weight: bold;
-            transition: 0.3s;
         }
 
-        .btn-opt:hover { background: var(--primary); }
-
-        .btn-ws {
-            background: #25d366;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            text-decoration: none;
-            text-align: center;
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: none;
+            box-sizing: border-box;
         }
+
+        #box {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 5px;
+        }
+
+        .msg { margin-bottom: 10px; padding: 10px; border-radius: 10px; }
+        .bot { background: #333; }
+        .user { background: #c40a0a; text-align: right; }
     </style>
 </head>
 <body>
 
 <div id="chat-container">
-    <div id="header">
-        <img src="https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Erick Custom Cars">
-        <h2 style="margin:10px 0 0 0; color:var(--primary);">ERICK CUSTOM CARS</h2>
-    </div>
-
-    <div id="chat-box" id="ui">
-        <div class="msg bot">
-            ¡Hola! Bienvenido al asistente de <b>Erick Custom Cars</b> en Portoviejo. 🛠️🚗<br><br>
-            ¿En qué servicio estás interesado hoy?
-            <div class="options" id="main-options">
-                <button class="btn-opt" onclick="showModels('Radios')">📻 Radios (9", 10", etc.)</button>
-                <button class="btn-opt" onclick="showModels('Faros')">💡 Faros y Luces LED</button>
-                <button class="btn-opt" onclick="showModels('Seguros')">⚡ Seguros Eléctricos</button>
-                <button class="btn-opt" onclick="showModels('Chapas')">🔒 Chapas de Puertas</button>
-            </div>
-        </div>
+    <h2 style="text-align:center; color:#c40a0a;">Erick Custom Cars</h2>
+    <div id="box"></div>
+    <div id="ui">
+        <input type="text" id="userInput" placeholder="Tu nombre...">
+        <button class="btn-main" onclick="next()">Empezar</button>
     </div>
 </div>
 
 <script>
-    let serviceType = "";
-    let selectedModel = "";
+    let step = 1;
+    let info = { nombre: "", tipo: "", detalle: "", precio: "" };
+    const box = document.getElementById('box');
 
-    function showModels(type) {
-        serviceType = type;
-        const chatBox = document.getElementById('chat-box');
-        
-        // Quitar opciones principales
-        document.getElementById('main-options').style.display = 'none';
+    function add(text, type) {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        div.innerHTML = text;
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
 
-        // Mensaje del usuario
-        chatBox.innerHTML += `<div class="msg user">Me interesan: ${type}</div>`;
+    function next() {
+        const val = document.getElementById('userInput').value;
+        if (val === "") return;
 
-        let models = "";
-        if(type === 'Radios') {
-            models = `
-                <button class="btn-opt" onclick="finalize('Radio de 9 Pulgadas')">Pantalla de 9"</button>
-                <button class="btn-opt" onclick="finalize('Radio de 10 Pulgadas')">Pantalla de 10"</button>
-                <button class="btn-opt" onclick="finalize('Radio con Cámara')">Radio + Cámara Reversa</button>
+        if (step === 1) {
+            info.nombre = val;
+            add(val, 'user');
+            add(`¡Hola ${val}! ¿Qué servicio buscas hoy?`, 'bot');
+            document.getElementById('ui').innerHTML = `
+                <button class="btn-main" onclick="setService('Radios')">Radios (9" y 10")</button>
+                <button class="btn-main" onclick="setService('Faros')">Faros LED</button>
+                <button class="btn-main" onclick="setService('Chapas')">Chapas y Seguros</button>
             `;
-        } else if(type === 'Faros') {
-            models = `
-                <button class="btn-opt" onclick="finalize('Faros LED Turbo')">Faros LED Turbo</button>
-                <button class="btn-opt" onclick="finalize('Ojos de Ángel')">Ojos de Ángel</button>
-                <button class="btn-opt" onclick="finalize('Cinta LED DRL')">Cinta LED DRL</button>
+        } else if (step === 2) {
+            info.detalle = val;
+            add(val, 'user');
+            add("¿Cuál es el valor de la inversión? ($)", 'bot');
+            document.getElementById('ui').innerHTML = `
+                <input type="number" id="userInput" placeholder="Ej: 45">
+                <button class="btn-main" onclick="next()">Generar Reporte</button>
             `;
-        } else if(type === 'Seguros') {
-            models = `
-                <button class="btn-opt" onclick="finalize('Kit de 4 Puertas')">Kit para 4 Puertas</button>
-                <button class="btn-opt" onclick="finalize('Módulo Alza Vidrios')">Módulo Alza Vidrios</button>
-            `;
-        } else if(type === 'Chapas') {
-            models = `
-                <button class="btn-opt" onclick="finalize('Chapa Lado Chofer')">Lado Chofer</button>
-                <button class="btn-opt" onclick="finalize('Juego Completo')">Juego de Chapas Completo</button>
-            `;
+            step = 3;
+        } else if (step === 3) {
+            info.precio = val;
+            add("$" + val, 'user');
+            finish();
         }
-
-        setTimeout(() => {
-            chatBox.innerHTML += `
-                <div class="msg bot">
-                    Excelente. ¿Qué modelo o variante prefieres?
-                    <div class="options">${models}</div>
-                </div>
-            `;
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 500);
     }
 
-    function finalize(model) {
-        selectedModel = model;
-        const chatBox = document.getElementById('chat-box');
+    function setService(s) {
+        info.tipo = s;
+        add(s, 'user');
+        add(`¿Qué modelo o accesorio de <b>${s}</b> prefieres?`, 'bot');
+        document.getElementById('ui').innerHTML = `
+            <input type="text" id="userInput" placeholder="Ej: Radio de 10 pulgadas...">
+            <button class="btn-main" onclick="next()">Continuar</button>
+        `;
+        step = 2;
+    }
+
+    function finish() {
+        add("¡Todo listo! Presiona para enviar a WhatsApp.", 'bot');
         
-        chatBox.innerHTML += `<div class="msg user">Prefiero: ${model}</div>`;
+        const msj = `*ERICK CUSTOM CARS*\n*ORDEN DE SERVICIO*\n▬▬▬▬▬▬▬▬▬▬\n👤 *Cliente:* ${info.nombre}\n🛠️ *Servicio:* ${info.tipo}\n✨ *Detalle:* ${info.detalle}\n💰 *Inversión:* $${info.precio}\n📍 *Portoviejo, Ecuador*`;
 
-        const msj = `*ERICK CUSTOM CARS*
-*CONSULTA DE SERVICIO*
----------------------------
-🛠️ *Categoría:* ${serviceType}
-✨ *Modelo:* ${selectedModel}
-📍 *Portoviejo, Ecuador*`;
-
-        setTimeout(() => {
-            chatBox.innerHTML += `
-                <div class="msg bot">
-                    ¡Perfecto! Ya tengo la información. Presiona abajo para enviármela por WhatsApp y darte el precio final.
-                    <a href="https://api.whatsapp.com/send?phone=593993331704&text=${encodeURIComponent(msj)}" class="btn-ws">
-                        📲 ENVIAR A WHATSAPP
-                    </a>
-                </div>
-            `;
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 500);
+        document.getElementById('ui').innerHTML = `
+            <a href="https://api.whatsapp.com/send?phone=593993331704&text=${encodeURIComponent(msj)}" target="_blank" style="text-decoration:none;">
+                <button class="btn-main" style="background:#25d366;">📲 ENVIAR A WHATSAPP</button>
+            </a>
+            <button class="btn-main" style="background:#444;" onclick="location.reload()">Nuevo Cliente</button>
+        `;
     }
+
+    add("¡Bienvenido a <b>Erick Custom Cars</b>! ¿Cómo te llamas?", 'bot');
 </script>
 
 </body>
 </html>
+
 
