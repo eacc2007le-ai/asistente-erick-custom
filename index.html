@@ -112,7 +112,15 @@
         function finish() {
             add("¡Excelente! Todo está listo. Presione el botón verde para enviar el presupuesto al cliente.", 'bot');
             
-            const msj = `*ERICK CUSTOM CARS*%0A*ORDEN DE SERVICIO*%0A--------------------%0A👤 *Cliente:* ${info.nombre}%0A🛠️ *Servicio:* ${info.tipo}%0A✨ *Detalle:* ${info.detalle}%0A💰 *Inversión:* $${info.precio}%0A📍 *Portoviejo, Ecuador*`;
+            const msj = const msj = `*ERICK CUSTOM CARS*
+*ORDEN DE SERVICIO*
+---------------------------
+👤 *Cliente:* ${info.nombre}
+🛠️ *Servicio:* ${info.tipo}
+✨ *Detalle:* ${info.detalle}
+💰 *Inversión:* $${info.precio}
+📍 *Portoviejo, Ecuador*`;
+
 
             const card = document.createElement('div');
             card.className = "report";
