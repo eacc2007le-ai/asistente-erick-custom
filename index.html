@@ -112,7 +112,7 @@
         function finish() {
             add("¡Excelente! Todo está listo. Presione el botón verde para enviar el presupuesto al cliente.", 'bot');
             
-            const msj = `*ERICK CUSTOM CARS*
+const msj = `*ERICK CUSTOM CARS*
 *ORDEN DE SERVICIO*
 ---------------------------
 👤 *Cliente:* ${info.nombre}
@@ -122,16 +122,19 @@
 📍 *Portoviejo, Ecuador*`;
 
 
+
             const card = document.createElement('div');
             card.className = "report";
             card.innerHTML = `🏁 <b>RESUMEN DE VENTA</b><br>CLIENTE: ${info.nombre}<br>TRABAJO: ${info.detalle}<br>TOTAL: $${info.precio}`;
             box.appendChild(card);
 
-              document.getElementById('ui').innerHTML = `
-        <a href="https://api.whatsapp.com/send?phone=593993331704&text=${encodeURIComponent(msj)}" target="_blank" class="btn-main" style="background:#25d366; text-decoration:none; display:block; text-align:center; color:white; padding:15px; border-radius:8px; font-weight:bold;">
-            📲 ENVIAR A WHATSAPP
-        </a>
-        <button class="opt-btn" style="margin-top:10px; width:100%; padding:10px;" onclick="location.reload()">Nuevo Cliente</button>
+document.getElementById('ui').innerHTML = `
+    <a href="https://api.whatsapp.com/send?phone=593993331704&text=${encodeURIComponent(msj)}" target="_blank" class="btn-send" style="background:#25d366; color:white; text-decoration:none; display:block; text-align:center; padding:15px; border-radius:10px; font-weight:bold;">
+        📲 ENVIAR A WHATSAPP
+    </a>
+    <button class="opt-btn" style="margin-top:10px; width:100%;" onclick="location.reload()">Nuevo Cliente</button>
+`;
+
         
   
             `;
